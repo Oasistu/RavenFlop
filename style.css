@@ -14,21 +14,21 @@ input {color: #000 !important;}
 @font-face {
   font-family: 'Minecraft';
   font-style: normal;
-  src: url(./fonts/MinecraftRegular-Bmg3.ttf);
+  src: url(fonts/MinecraftRegular-Bmg3.ttf);
   font-weight: normal;
 }
 
 @font-face {
   font-family: 'Minecraft';
   font-style: normal;
-  src: url(./fonts/MinecraftBold-nMK1.ttf);
+  src: url(/fonts/MinecraftBold-nMK1.ttf);
   font-weight: bold;
 }
 
 @font-face {
   font-family: 'Minecraft';
   font-style: italic;
-  src: url(./fonts/MinecraftBoldItalic-1y1e.ttf);
+  src: url(/fonts/MinecraftBoldItalic-1y1e.ttf);
   font-weight: bold;
 }
 
