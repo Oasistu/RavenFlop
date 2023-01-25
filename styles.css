@@ -1,0 +1,126 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  background-color: #33404D;
+}
+
+html, body, p, div, input {
+  font-family: Minecraft;
+  color: #fff;
+}
+
+input {color: #000 !important;}
+
+@font-face {
+  font-family: 'Minecraft';
+  font-style: normal;
+  src: url(./fonts/MinecraftRegular-Bmg3.ttf);
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Minecraft';
+  font-style: normal;
+  src: url(./fonts/MinecraftBold-nMK1.ttf);
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'Minecraft';
+  font-style: italic;
+  src: url(./fonts/MinecraftBoldItalic-1y1e.ttf);
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'Minecraft';
+  font-style: italic;
+  src: url(./fonts/MinecraftItalic-R8Mo.ttf);
+  font-weight: normal;
+}
+
+.container {
+  width: 400px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.choices {
+  display: flex;
+  justify-content: space-between;
+}
+
+#text-input, #para {
+  width: 400px;
+  max-width: 400px;
+  height: auto;
+  overflow-wrap: break-word;
+}
+
+#copy-text {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 4px 8px;
+}
+
+#length-monitor {
+  transition: 0.1s;
+  margin: 0;
+  overflow: hidden;
+}
+
+.hidden {
+  height: 0;
+}
+
+#demo {
+  font-size: 2em;
+}
+
+.i-b {
+  font-weight: bold;
+}
+
+.i-i {
+  font-style: italic;
+}
+
+.i-u {
+  text-decoration: underline;
+}
+
+button,
+input,
+label {
+  cursor: pointer;
+}
+
+.color-entry {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  border: none;
+  background-color:transparent;
+}
+
+.color-entry::-webkit-color-swatch {
+  border: 1px solid #e7e7e7;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.color-entry::-moz-color-swatch {
+  border: 1px solid #e7e7e7;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.color-entry-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
