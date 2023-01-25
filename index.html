@@ -1,1 +1,58 @@
-<h1>Hello</h1>
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="container">
+    <p id="demo"></p>
+    <label style="text-align: left; width: 100%;">Enter Text:</label>
+    <input class="trigger-update" id="text-input">
+    <div class="choices">
+      <div>
+        <input class="trigger-update" type="checkbox" id="text-bold" name="text-bold" value="True">
+        <label for="text-bold">Bold</label>
+      </div>
+      <div>
+        <input class="trigger-update" type="checkbox" id="text-italic" name="text-italic" value="True">
+        <label for="text-italic">Italic</label>
+      </div>
+      <div>
+        <input class="trigger-update" type="checkbox" id="text-underline" name="text-underline" value="True">
+        <label for="text-underline">Underline</label>
+      </div>
+    </div>
+    <button id="copy-text">Copy</button>
+    <p id="length-monitor" class="hidden"></p>
+    <p id="para" style="display: none;"></p>
+
+    <div class="color-list" style="display: flex; flex-direction: column;">
+      <button id="add-color">+</button><button id="remove-color">-</button>
+      <div class="color-entry-container">
+        <label for="color1">Color 1 </label>
+        <input class="color-entry trigger-update" type="color" value="#ffffff" id="color1"/>
+        <input class="color-entry-text" data-input-ref="color1" />
+      </div>
+      <div class="color-entry-container">
+        <label for="color2">Color 2 </label>
+        <input class="color-entry trigger-update" type="color" value="#ffffff" id="color2"/>
+        <input class="color-entry-text" data-input-ref="color2" />
+      </div>
+    </div>
+  </div>
+  <!--
+  This script places a badge on your repl's full-browser view back to your repl's cover
+  page. Try various colors for the theme: dark, light, red, orange, yellow, lime, green,
+  teal, blue, blurple, magenta, pink!
+  -->
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+  <script src="https://replit.com/public/js/replit-badge.js" theme="blue" defer></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
