@@ -25,9 +25,14 @@ function processText () {
   console.log('Input Colors :' + inputColors);
 
   if (((colourInstances - 2) > 0) && (inputColors.length == 2)) {
-    let colSegs = [];
-    
+    // Redesigned <> format
+    var twoColourGrad = `{gColour1>} + inputText + {gColour2<}`
+    var colourArray = '';
+    // OLD CODE //
+    /*let colSegs = [];
+
     colourInstances -= 2;
+
     // COLOURS : 2
     for (let itX = 0; itX < 3; itX++) {
       // Init. Get Colour Inputs. //
@@ -87,8 +92,9 @@ function processText () {
       }
 
       colourArray = colourArray.concat([(colRed + colGreen + colBlue)]);
+      */
     }
-    colourArray = [(inputColors[0].replace('#', ''))].concat(colourArray).concat([(inputColors[1].replace('#', ''))]);
+    //colourArray = [(inputColors[0].replace('#', ''))].concat(colourArray).concat([(inputColors[1].replace('#', ''))]);
   } else if ((colourInstances > 0) && (inputColors.length > 2)) {
     console.log("Executing 3+ Colour Code.");
     // Sequence of colouring on a character based on location on a "colour number line".
@@ -168,6 +174,7 @@ function processText () {
 
   }
 
+  console.log('Two Colour Gradient: ' + twoColourGrad);
   console.log('Colour Array: ' + colourArray);
 
   // Construct DEMO + Output Texts.
