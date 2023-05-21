@@ -28,20 +28,19 @@
       </div>
     </div>
     <button id="copy-text">Copy</button>
+    <button id="copy-new-format">Copy (Short)</button>
     <p id="length-monitor" class="hidden"></p>
-    <p id="para" style="display: none;"></p>
+    <p id="para" style="display: none;"></p><p id="para2" style="display: none;"></p>
 
     <div class="color-list" style="display: flex; flex-direction: column;">
       <button id="add-color">+</button><button id="remove-color">-</button>
       <div class="color-entry-container">
         <label for="color1">Color 1 </label>
-        <input class="color-entry trigger-update" type="color" value="#ffffff" id="color1"/>
-        <input class="color-entry-text" data-input-ref="color1" />
+        <input class="color-entry trigger-update" data-jscolor="{preset: 'dark',closeButton: true,closeText: 'OK',width: 300,height: 300}" value="#ffffff" id="color1"/>
       </div>
       <div class="color-entry-container">
         <label for="color2">Color 2 </label>
-        <input class="color-entry trigger-update" type="color" value="#ffffff" id="color2"/>
-        <input class="color-entry-text" data-input-ref="color2" />
+        <input class="color-entry trigger-update" data-jscolor="{preset: 'dark',closeButton: true,closeText: 'OK',width: 300,height: 300}" value="#ffffff" id="color2"/>
       </div>
     </div>
   </div>
@@ -53,6 +52,7 @@
   <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
   <script src="https://replit.com/public/js/replit-badge.js" theme="blue" defer></script>
   <script src="script.js"></script>
+  <script src="jscolor/jscolor.js"></script>
 </body>
 
 </html>

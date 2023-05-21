@@ -1,23 +1,5 @@
 console.clear();
 
-function hexToRGB (hex) {
-  hex = hex.replace('#','');
-  var triPartHex = [hex.slice(0,2),hex.slice(2,4),hex.slice(4,6)];
-  return (triPartHex.map(x => parseInt(x, 16)));
-}
-
-function compareRGB (heavyColor, oppColor, mod) {
-  return [Math.round(heavyColor[0] - ((heavyColor[0]-oppColor[0]) * mod)),(heavyColor[1] - Math.round((heavyColor[1]-oppColor[1]) * mod)),(heavyColor[2] - Math.round((heavyColor[2]-oppColor[2]) * mod))];
-}
-
-function hexFromRGB (rgb) {
-  var newRGB = [rgb[0].toString(16), rgb[1].toString(16), rgb[2].toString(16)];
-  newRGB = newRGB.map(x => {
-    if (x=="0") {return "00"} else {return x}
-  }); 
-  return `#${(newRGB[0]+newRGB[1]+newRGB[2])}`;
-}
-
 function processText () {
   var inputText = $('#text-input').val();
 
@@ -42,10 +24,9 @@ function processText () {
   })
   console.log('Input Colors :' + inputColors);
 
-  var finalOutput;
   if (((colourInstances - 2) > 0) && (inputColors.length == 2)) {
     // Redesigned <> format
-    finalOutput = `{${gColour1}>}${inputText}{${gColour2}<}`;
+    var twoColourGrad = `{${gColour1}>}${inputText}{${gColour2}<}`;
 
     // OLD CODE //
     let colSegs = [];
@@ -114,74 +95,26 @@ function processText () {
     }
     colourArray = [(inputColors[0].replace('#', ''))].concat(colourArray).concat([(inputColors[1].replace('#', ''))]);
   } else if ((colourInstances > 0) && (inputColors.length > 2)) {
+    
+  }
+  /*else if ((colourInstances > 0) && (inputColors.length > 2)) {
     console.log("Executing 3+ Colour Code.");
     // Sequence of colouring on a character based on location on a "colour number line".
     // * Determine position.
     // * Modify color relative to position.
     var inputTextLen = inputText.length;
-    var numColors = inputColors.length - 1;       // I think this matches up as number of Insertions.
+    var numColors = inputColors.length - 1;
     var positionMod = numColors / inputTextLen;
-    //console.log('---------------------');
-    //console.log('posMod: ' + positionMod);
-    //console.log(`positionMod = ${numColors} / ${inputTextLen}`)
+    console.log('---------------------');
+    console.log('posMod: ' + positionMod);
+    console.log(`positionMod = ${numColors} / ${inputTextLen}`)
     
-    // REMAPPING - Formerly: each colourInstance, new: each gradientInsertion
-    var tempStr = inputText;
-    finalOutput = `{${inputColors[0]}>}`
-    var lengthInsertion = ((inputText.replace(' ','')).length / numColors);
-    for (let iInsertion = 1; iInsertion < numColors; iInsertion++) {
-      console.log("PROCESSING PROCESSING");
-      var charPosition = lengthInsertion * iInsertion;
-      
-      if (!(Number.isInteger(charPosition))) {
-        var firstPos = (Math.floor(charPosition) - 0.5) - (lengthInsertion * (iInsertion - 1));
-        var nextPos = Math.ceil(charPosition) - 0.5;
-        
-        // Initial. First colour.
-        // Chars in Section: Char Index Pos of End of String - Char Index Pos of Start.
-        let validChar;
-        validChar = 0;
-        console.log("Start: " + (Math.floor(iInsertion * lengthInsertion) - 1) + "     End: " + ((Math.floor((iInsertion - 1) * lengthInsertion)) - 1))
-        var charsInSection = ((Math.floor(iInsertion * lengthInsertion) - 1) - ((Math.floor((iInsertion - 1) * lengthInsertion)) - 1));
-        console.log(`charsInsection: ${charsInSection}`);
-        while (validChar < charsInSection) {
-          finalOutput += tempStr[0];
-          console.log(`validChar: ${validChar}, charsInsection: ${charsInSection}, tempStr char: ${tempStr[0]}`);
-          if (tempStr[0] != ' ') {
-            validChar += 1;
-          }
-          tempStr = tempStr.slice(1,tempStr.length);
-        }
-
-        var prevColor = hexToRGB(inputColors[iInsertion - 1]);
-        var focalColor = hexToRGB(inputColors[iInsertion]);
-        var nextColor = hexToRGB(inputColors[iInsertion + 1]);
-        // < Gradient. Color-1 ---> Color... Position: firstPos-0.5
-        var modifier = ((firstPos / lengthInsertion) - 1) * -1;
-        console.log(`firstPos: ${firstPos}, lengthInsertion: ${lengthInsertion}`);
-
-        var firstColor = compareRGB(focalColor, prevColor, modifier);
-        console.log('firstColor: ' + firstColor);
-        var firstColorHex = hexFromRGB(firstColor);
-
-        var secondColor = compareRGB(focalColor, nextColor, modifier);
-        console.log('secondColor: ' + secondColor);
-        console.log(`focalColor: ${focalColor} ---- nextColor: ${nextColor} ---- modifier: ${modifier}`)
-        var secondColorHex = hexFromRGB(secondColor);
-
-        finalOutput += `{${firstColorHex}<}{${secondColorHex}>}`;
-        // > Gradient. Color ---> Color+1... Position: nextPos-0.5
-      }
-      console.log('finalOutput: ' + finalOutput);
-    }
-    finalOutput += `${tempStr}{${inputColors[inputColors.length - 1]}<}`
-    console.log('Completed: ' + finalOutput);
     // For each colourInstance, generate a colour (per char)
     for (let colourX = 0; colourX < colourInstances; colourX++) {
       let colSegs = [];
       let colPos = colourX;
 
-      //console.log(`colourX (loop pos): ${colourX}, colPos: ${colPos}`);
+      console.log(`colourX (loop pos): ${colourX}, colPos: ${colPos}`);
 
       // 0.21389 = ['0', '21389'] - We can use [0] of arr for the lower range colour and ([0] + 1) for upper colour.
       //   - then [1] of the arr can be used as (0.[1]) a modifier of the colour. i.e 0.25 is 25% of the way between
@@ -195,9 +128,9 @@ function processText () {
       let posData = colorLinePos.split('.');
       posData = [(parseInt(posData[0])), posData[1]];
       let posMultiplier = parseFloat(('0.' + (posData[1]).toString()));
-      //console.log(`posData: ${posData}, posMultiplier: ${posMultiplier}`)
+      console.log(`posData: ${posData}, posMultiplier: ${posMultiplier}`)
 
-      //console.log(`Position 1 (Colour): ${inputColors[(posData[0])]}, Position 2 (Colour): ${inputColors[(posData[0] + 1)]}`);
+      console.log(`Position 1 (Colour): ${inputColors[(posData[0])]}, Position 2 (Colour): ${inputColors[(posData[0] + 1)]}`);
       
       for (let itX = 0; itX < 3; itX++) {
         // Init. Gets Colour Inputs. -- Relative to position on colour line. //
@@ -233,18 +166,18 @@ function processText () {
         colBlue = '0' + colBlue;
       }
 
-      //console.log('New Colour: ' + (colRed + colGreen + colBlue));
+      console.log('New Colour: ' + (colRed + colGreen + colBlue));
       
       colourArray = colourArray.concat([(colRed + colGreen + colBlue)]);
       //}
 
 
-    }
+    }*/
 
   }
 
-  //console.log('Two Colour Gradient: ' + twoColourGrad);
-  //console.log('Colour Array: ' + colourArray);
+  console.log('Two Colour Gradient: ' + twoColourGrad);
+  console.log('Colour Array: ' + colourArray);
 
   // Construct DEMO + Output Texts.
   //   - Classes + Minecraft styles, for formatting.
@@ -260,7 +193,6 @@ function processText () {
   for (let charX = 0; charX < colourArray.length; charX++) {
     // Raw styling, for copying.
     outputText = outputText + `{#${colourArray[charX]}}${textExt}${inputText[(charX)]}`;
-
     // Demonstration. Styles rendered in spans.
     demoText = demoText + `<span class="${demoClasses}" style="color: #${colourArray[charX]}">${inputText[charX]}</span>`;
   }
@@ -268,7 +200,6 @@ function processText () {
   //demoText = demoText + `<span class="${demoClasses}" style="color: ${inputColors[1]}">${inputText[inputText.length - 1]}</span>`;
   //outputText = outputText + `{${inputColors[1]}}${textExt}${inputText[inputText.length - 1]}`;
   $('#para').text(outputText);
-  $('#para2').text(finalOutput);
 
   $('#demo').html(demoText);
 }
@@ -298,9 +229,9 @@ $('#add-color').click(function() {
   let newCols = ($('.color-entry-container').toArray()).length;
   $('.color-list').append(`<div class="color-entry-container">
       <label for="color${newCols + 1}">Color ${newCols + 1} </label>
-      <input class="color-entry trigger-update" data-jscolor="{preset: 'dark',closeButton: true,closeText: 'OK',width: 300,height: 300}" value="#ffffff" id="color${newCols + 1}"/>
+      <input class="color-entry trigger-update" type="color" value="#ffffff" id="color${newCols + 1}"/>
+      <input class="color-entry-text" data-input-ref="color${newCols + 1}" />
     </div>`);
-  jscolor.install();
   colorInit();
   processText();
 })
@@ -314,8 +245,4 @@ $('#remove-color').click(function() {
 
 $('#copy-text').click(function() {
   navigator.clipboard.writeText($('#para').text());
-})
-
-$('#copy-new-format').click(function() {
-  navigator.clipboard.writeText($('#para2').text());
 })
