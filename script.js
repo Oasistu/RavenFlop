@@ -1,4 +1,6 @@
 console.clear();
+$('#text-input').val('');
+$('#demo').html('<span>Name or Lore</span>');
 
 function hexToRGB (hex) {
   hex = hex.replace('#','');

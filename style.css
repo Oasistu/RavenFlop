@@ -9,6 +9,11 @@ html, body, p, div, input {
   color: #fff;
 }
 
+body {
+  display: flex;
+  justify-content: center;
+}
+
 input {color: #000 !important;}
 
 @font-face {
