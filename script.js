@@ -42,10 +42,14 @@ function processText () {
   })
   console.log('Input Colors :' + inputColors);
 
+  // Name/Lore Text Format //
+  var textExt = `${itemBold ? '&l' : ''}${itemItalic ? '&o' : ''}${itemUnderline ? '&n' : ''}`;
+
   var finalOutput;
+  finalOutput = '';
   if (((colourInstances - 2) > 0) && (inputColors.length == 2)) {
     // Redesigned <> format
-    finalOutput = `{${gColour1}>}${inputText}{${gColour2}<}`;
+    finalOutput = `{${gColour1}>}${textExt}${inputText}{${gColour2}<}`;
 
     // OLD CODE //
     let colSegs = [];
@@ -127,13 +131,14 @@ function processText () {
     
     // REMAPPING - Formerly: each colourInstance, new: each gradientInsertion
     var tempStr = inputText;
-    finalOutput = `{${inputColors[0]}>}`
-    var lengthInsertion = ((inputText.replace(' ','')).length / numColors);
+    finalOutput = `{${inputColors[0]}>}${textExt}`
+    var lengthInsertion = (((inputText.replace(' ','')).length) / numColors);
     for (let iInsertion = 1; iInsertion < numColors; iInsertion++) {
-      console.log("PROCESSING PROCESSING");
+      console.log("Processing Insertion");
       var charPosition = lengthInsertion * iInsertion;
       
-      if (!(Number.isInteger(charPosition))) {
+      //if (!(Number.isInteger(charPosition))) {
+      if (true) {
         var firstPos = (Math.floor(charPosition) - 0.5) - (lengthInsertion * (iInsertion - 1));
         var nextPos = Math.ceil(charPosition) - 0.5;
         
@@ -141,12 +146,12 @@ function processText () {
         // Chars in Section: Char Index Pos of End of String - Char Index Pos of Start.
         let validChar;
         validChar = 0;
-        console.log("Start: " + (Math.floor(iInsertion * lengthInsertion) - 1) + "     End: " + ((Math.floor((iInsertion - 1) * lengthInsertion)) - 1))
+        //console.log("Start: " + (Math.floor(iInsertion * lengthInsertion) - 1) + "     End: " + ((Math.floor((iInsertion - 1) * lengthInsertion)) - 1))
         var charsInSection = ((Math.floor(iInsertion * lengthInsertion) - 1) - ((Math.floor((iInsertion - 1) * lengthInsertion)) - 1));
-        console.log(`charsInsection: ${charsInSection}`);
+        //console.log(`charsInsection: ${charsInSection}`);
         while (validChar < charsInSection) {
           finalOutput += tempStr[0];
-          console.log(`validChar: ${validChar}, charsInsection: ${charsInSection}, tempStr char: ${tempStr[0]}`);
+          //console.log(`validChar: ${validChar}, charsInsection: ${charsInSection}, tempStr char: ${tempStr[0]}`);
           if (tempStr[0] != ' ') {
             validChar += 1;
           }
@@ -158,18 +163,18 @@ function processText () {
         var nextColor = hexToRGB(inputColors[iInsertion + 1]);
         // < Gradient. Color-1 ---> Color... Position: firstPos-0.5
         var modifier = ((firstPos / lengthInsertion) - 1) * -1;
-        console.log(`firstPos: ${firstPos}, lengthInsertion: ${lengthInsertion}`);
+        //console.log(`firstPos: ${firstPos}, lengthInsertion: ${lengthInsertion}`);
 
         var firstColor = compareRGB(focalColor, prevColor, modifier);
-        console.log('firstColor: ' + firstColor);
+        //console.log('firstColor: ' + firstColor);
         var firstColorHex = hexFromRGB(firstColor);
 
         var secondColor = compareRGB(focalColor, nextColor, modifier);
-        console.log('secondColor: ' + secondColor);
-        console.log(`focalColor: ${focalColor} ---- nextColor: ${nextColor} ---- modifier: ${modifier}`)
+        //console.log('secondColor: ' + secondColor);
+        //console.log(`focalColor: ${focalColor} ---- nextColor: ${nextColor} ---- modifier: ${modifier}`)
         var secondColorHex = hexFromRGB(secondColor);
 
-        finalOutput += `{${firstColorHex}<}{${secondColorHex}>}`;
+        finalOutput += `{${firstColorHex}<}{${secondColorHex}>}${textExt}`;
         // > Gradient. Color ---> Color+1... Position: nextPos-0.5
       }
       console.log('finalOutput: ' + finalOutput);
@@ -249,7 +254,6 @@ function processText () {
   // Construct DEMO + Output Texts.
   //   - Classes + Minecraft styles, for formatting.
   var demoClasses = `${itemBold ? 'i-b ' : ''}${itemItalic ? 'i-i ' : ''}${itemUnderline ? 'i-u' : ''}`;
-  var textExt = `${itemBold ? '&l' : ''}${itemItalic ? '&o' : ''}${itemUnderline ? '&n' : ''}`;
 
   //   - Init. Starts with first char, using first color.
   //let demoText = `<span class="${demoClasses}" style="color: ${inputColors[0]}">${inputText[0]}</span>`;
@@ -269,6 +273,9 @@ function processText () {
   //outputText = outputText + `{${inputColors[1]}}${textExt}${inputText[inputText.length - 1]}`;
   $('#para').text(outputText);
   $('#para2').text(finalOutput);
+
+  $('#long-format-length').text(`${outputText.length} Characters`);
+  $('#croc-format-length').text(`${finalOutput.length} Characters`);
 
   $('#demo').html(demoText);
 }

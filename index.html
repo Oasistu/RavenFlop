@@ -12,7 +12,7 @@
   <div class="container">
     <p id="demo"></p>
     <label style="text-align: left; width: 100%;">Enter Text:</label>
-    <input class="trigger-update" id="text-input">
+    <input class="trigger-update" id="text-input" type="text" data-form-type="other">
     <div class="choices">
       <div>
         <input class="trigger-update" type="checkbox" id="text-bold" name="text-bold" value="True">
@@ -42,6 +42,11 @@
         <label for="color2">Color 2 </label>
         <input class="color-entry trigger-update" data-jscolor="{preset: 'dark',closeButton: true,closeText: 'OK',width: 300,height: 300}" value="#ffffff" id="color2"/>
       </div>
+    </div>
+    <div>
+      <h2>Length:</h2>
+      <p id="long-format-length">n/a</p>
+      <p id="croc-format-length">n/a</p>
     </div>
   </div>
   <!--
