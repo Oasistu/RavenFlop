@@ -124,3 +124,8 @@ label {
   align-items: center;
   gap: 16px;
 }
+
+.q-red {color: #ee3e3e}
+.q-amber {color: #ee843e}
+.q-yellow {color: #eeeb3e}
+.q-green {color: #67ee3e}

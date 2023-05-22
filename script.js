@@ -18,6 +18,20 @@ function hexFromRGB (rgb) {
   return `#${(newRGB[0]+newRGB[1]+newRGB[2])}`;
 }
 
+function lengthColor(id, count) {
+  let counter = $(id).children("span")[0];
+  $(counter).removeClass();
+  if (count < 244) {
+    $(counter).addClass('q-green');
+  } else if (count < 245) {
+    $(counter).addClass('q-yellow');
+  } else if (count < 247) {
+    $(counter).addClass('q-amber');
+  } else {
+    $(counter).addClass('q-red');
+  }
+}
+
 function processText () {
   var inputText = $('#text-input').val();
 
@@ -274,8 +288,11 @@ function processText () {
   $('#para').text(outputText);
   $('#para2').text(finalOutput);
 
-  $('#long-format-length').text(`${outputText.length} Characters`);
-  $('#croc-format-length').text(`${finalOutput.length} Characters`);
+  // Length count, and validity.
+  $('#long-format-length').html(`Long Format: <span>${outputText.length}</span> Characters`);
+  lengthColor('#long-format-length', outputText.length);
+  $('#croc-format-length').html(`Croc Format: <span>${finalOutput.length}</span> Characters`);
+  lengthColor('#croc-format-length', finalOutput.length);
 
   $('#demo').html(demoText);
 }
