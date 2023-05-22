@@ -39,6 +39,11 @@ input {color: #000 !important;}
   font-weight: normal;
 }
 
+.reg-text {
+  margin: 0;
+  line-height: 150%;
+}
+
 .container {
   width: 400px;
   padding: 16px;
