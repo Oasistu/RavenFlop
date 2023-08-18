@@ -9,6 +9,16 @@ function hexToRGB (hex) {
 }
 
 function compareRGB (heavyColor, oppColor, mod) {
+  /*console.log("COMPARE COLORS");
+  console.log(heavyColor[0] - ((heavyColor[0]-oppColor[0]) * mod));
+  console.log((heavyColor[1] - Math.round((heavyColor[1]-oppColor[1]) * mod)));
+  console.log(heavyColor[2] - Math.round((heavyColor[2]-oppColor[2]) * mod));*/
+  colorResult = [Math.round(heavyColor[0] - ((heavyColor[0]-oppColor[0]) * mod)),(heavyColor[1] - Math.round((heavyColor[1]-oppColor[1]) * mod)),(heavyColor[2] - Math.round((heavyColor[2]-oppColor[2]) * mod))];
+  for (var i = 0;i < colorResult.length; i++) {
+    if ((colorResult[i].toString()).length == 1) {
+      colorResult[i] = (parseInt('0' + colorResult[i].toString()));
+    }
+  }
   return [Math.round(heavyColor[0] - ((heavyColor[0]-oppColor[0]) * mod)),(heavyColor[1] - Math.round((heavyColor[1]-oppColor[1]) * mod)),(heavyColor[2] - Math.round((heavyColor[2]-oppColor[2]) * mod))];
 }
 
@@ -185,6 +195,7 @@ function processText () {
         //console.log('firstColor: ' + firstColor);
         var firstColorHex = hexFromRGB(firstColor);
 
+        console.log(`focalColor: ${focalColor} // nextColor: ${nextColor} // modifier: ${modifier}`)
         var secondColor = compareRGB(focalColor, nextColor, modifier);
         //console.log('secondColor: ' + secondColor);
         //console.log(`focalColor: ${focalColor} ---- nextColor: ${nextColor} ---- modifier: ${modifier}`)

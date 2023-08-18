@@ -1,7 +1,7 @@
 html, body {
-  height: 100%;
-  width: 100%;
   background-color: #33404D;
+  padding: 0;
+  margin:0;
 }
 
 html, body, p, div, input {
@@ -48,6 +48,15 @@ input {color: #000 !important;}
   margin: 0;
   line-height: 150%;
 }
+
+.tech {
+  position: absolute;
+  left: 24px;
+}
+
+.mc-a7 {color: #b4b4b4;}
+
+.mc-a6 {color: #FFAA00;}
 
 .container {
   width: 400px;
