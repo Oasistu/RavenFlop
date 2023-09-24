@@ -16,10 +16,11 @@ function compareRGB (heavyColor, oppColor, mod) {
   colorResult = [Math.round(heavyColor[0] - ((heavyColor[0]-oppColor[0]) * mod)),(heavyColor[1] - Math.round((heavyColor[1]-oppColor[1]) * mod)),(heavyColor[2] - Math.round((heavyColor[2]-oppColor[2]) * mod))];
   for (var i = 0;i < colorResult.length; i++) {
     if ((colorResult[i].toString()).length == 1) {
-      colorResult[i] = (parseInt('0' + colorResult[i].toString()));
+      colorResult[i] = (('0' + colorResult[i].toString()));
     }
   }
-  return [Math.round(heavyColor[0] - ((heavyColor[0]-oppColor[0]) * mod)),(heavyColor[1] - Math.round((heavyColor[1]-oppColor[1]) * mod)),(heavyColor[2] - Math.round((heavyColor[2]-oppColor[2]) * mod))];
+  return colorResult;
+  //return [Math.round(heavyColor[0] - ((heavyColor[0]-oppColor[0]) * mod)),(heavyColor[1] - Math.round((heavyColor[1]-oppColor[1]) * mod)),(heavyColor[2] - Math.round((heavyColor[2]-oppColor[2]) * mod))];
 }
 
 function hexFromRGB (rgb) {
