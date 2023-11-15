@@ -19,6 +19,7 @@ function compareRGB (heavyColor, oppColor, mod) {
       colorResult[i] = (('0' + colorResult[i].toString()));
     }
   }
+  console.log('Color Result: ' + colorResult);
   return colorResult;
   //return [Math.round(heavyColor[0] - ((heavyColor[0]-oppColor[0]) * mod)),(heavyColor[1] - Math.round((heavyColor[1]-oppColor[1]) * mod)),(heavyColor[2] - Math.round((heavyColor[2]-oppColor[2]) * mod))];
 }
@@ -26,7 +27,8 @@ function compareRGB (heavyColor, oppColor, mod) {
 function hexFromRGB (rgb) {
   var newRGB = [rgb[0].toString(16), rgb[1].toString(16), rgb[2].toString(16)];
   newRGB = newRGB.map(x => {
-    if (x=="0") {return "00"} else {return x}
+    //if (x=="0") {return "00"} else {return x}
+    if (x.length == 1) {return ('0' + x)} else {return x}
   }); 
   return `#${(newRGB[0]+newRGB[1]+newRGB[2])}`;
 }
