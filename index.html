@@ -9,39 +9,47 @@
 </head>
 
 <body>
-  <div class="tech">
-    <p><span class="mc-a7">Version:</span> 2.02</p>
-    <p><span class="mc-a6">Changes:</span><br>•Added feedback section<br>•Actually fixed color blend issue<br>•Fixed color blend issue (Croc Format)<br>•Added version/changes</p>
-    <p><span class="mc-ab">Feedback:</span><br>Found a bug or have some feedback?<br>Please report it to me on discord.</p>
-  </div>
   <div class="container">
     <h1>RavenFlop</h1>
     <p class="reg-text">Named after BirdFlop.</p>
     <p class="reg-text" style="color: #b4b4b4; font-style: italic;">by Oasistu</p>
-    <p id="demo"><span style="color: #b4b4b4">Name or Lore</span></p>
-    <label style="text-align: left; width: 100%;">Enter Text:</label>
-    <input class="trigger-update" placeholder="Name or Lore" id="text-input" type="text" data-form-type="other">
-    <div class="choices">
-      <div>
-        <input class="trigger-update" type="checkbox" id="text-bold" name="text-bold" value="True">
-        <label for="text-bold">Bold</label>
+    <div class="section">
+      <div style="
+          border: 3px solid #1b0c1b;
+          height: min-content;
+          box-sizing: border-box;
+          margin: 48px 0 16px 0;
+          -webkit-mask: conic-gradient(at 3px 3px,#000 270deg,#0000 0) 0 0/calc(100% - 3px) calc(100% - 3px);
+      ">
+        <p id="demo"><span>Name or Lore</span></p>
       </div>
-      <div>
-        <input class="trigger-update" type="checkbox" id="text-italic" name="text-italic" value="True">
-        <label for="text-italic">Italic</label>
-      </div>
-      <div>
-        <input class="trigger-update" type="checkbox" id="text-underline" name="text-underline" value="True">
-        <label for="text-underline">Underline</label>
+      <h3 style="text-align: left;width: 100%;color: #FFAA00;">Enter Text:</h3>
+      <input class="trigger-update" placeholder="Name or Lore" id="text-input" type="text" data-form-type="other">
+      <div class="choices">
+        <div>
+          <input class="trigger-update" type="checkbox" id="text-bold" name="text-bold" value="True">
+          <label for="text-bold">Bold</label>
+        </div>
+        <div>
+          <input class="trigger-update" type="checkbox" id="text-italic" name="text-italic" value="True">
+          <label for="text-italic">Italic</label>
+        </div>
+        <div>
+          <input class="trigger-update" type="checkbox" id="text-underline" name="text-underline" value="True">
+          <label for="text-underline">Underline</label>
+        </div>
       </div>
     </div>
-    <button id="copy-text">Long Format</button>
-    <button id="copy-new-format">Crocodile Format (<>)</button>
     <p id="length-monitor" class="hidden"></p>
-    <p id="para" style="display: none;"></p><p id="para2" style="display: none;"></p>
+    <p id="para" style="display: none;"></p><p id="para2" style="display: none;"></p><p id="para3" style="display: none;"></p>
 
-    <div class="color-list" style="display: flex; flex-direction: column;">
-      <button id="add-color">+</button><button id="remove-color">-</button>
+    <div class="color-list section" style="display: flex; flex-direction: column;">
+      <div class="color-controls" style="display: flex;justify-content: space-between;">
+        <h3 style="color:#FFAA00;cursor: default;">Colours:</h3>
+        <div style="display:flex;justify-content: center;align-items: center;">
+          <button id="add-color" style="margin-right: 4px;">+</button><button id="remove-color">-</button>
+        </div>
+      </div>
       <div class="color-entry-container">
         <label for="color1">Color 1 </label>
         <input class="color-entry trigger-update" data-jscolor="{preset: 'dark',closeButton: true,closeText: 'OK',width: 300,height: 300}" value="#ffffff" id="color1"/>
@@ -51,15 +59,37 @@
         <input class="color-entry trigger-update" data-jscolor="{preset: 'dark',closeButton: true,closeText: 'OK',width: 300,height: 300}" value="#ffffff" id="color2"/>
       </div>
     </div>
-    <div>
+    <div class="section">
+      <h3 style="color:#FFAA00;cursor:default;margin-top: 16px;">Copy:</h3>
+      <div class="copy-button-list" style="display: flex;flex-direction: column;">
+        <button id="copy-text">Long Format</button>
+        <button id="copy-new-format">Crocodile Format (<>)</button>
+        <button id="copy-croc-two">Croc 2.0 (Experimental)</button>
+      </div>
+    </div>
+    <div class="section">
       <h2>Length:</h2>
       <p id="long-format-length">Long Format: n/a Characters</p>
       <p id="croc-format-length">Croc Format: n/a Characters</p>
+      <p id="croc2-format-length">Croc 2.0   : n/a Characters</p>
       <p><span class="q-amber">246</span> Limit for /itemname & /itemlore</p>
       <p><span class="q-yellow">244</span> Limit for /itemlore [1 digit]</p>
       <p><span class="q-green">243</span> Limit for /itemlore [2 digit]</p>
     </div>
+    <div class="tech">
+      <p><span class="mc-a7">Version:</span> 3.01</p>
+      <p><span class="mc-a6">Changes:</span>
+        <br>•Layout overhaul
+        <br>•Added croc 2.0
+        <br>•Added feedback section
+        <br>•Actually fixed color blend issue
+        <br>•Fixed color blend issue (Croc Format)
+        <br>•Added version/changes
+      </p>
+      <p><span class="mc-ab">Feedback:</span><br>Found a bug or have some feedback?<br>Please report it to me on discord.</p>
+    </div>
   </div>
+
   <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
   <script>
     $('#text-input').val('');

@@ -9,6 +9,14 @@ html, body, p, div, input {
   color: #fff;
 }
 
+h3 {
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: underline;
+  margin: 8px 0;
+  text-decoration-skip-ink: none;
+}
+
 body {
   display: flex;
   justify-content: center;
@@ -65,7 +73,10 @@ input {color: #000 !important;}
   padding: 16px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+}
+
+.section {
+  margin-bottom: 16px;
 }
 
 .choices {
@@ -78,12 +89,12 @@ input {color: #000 !important;}
   max-width: 400px;
   height: auto;
   overflow-wrap: break-word;
+  box-sizing: border-box;
 }
 
-#copy-text {
+.copy-button-list button {
   display: inline-block;
-  margin-top: 16px;
-  padding: 4px 8px;
+  padding: 8px 8px;
 }
 
 #length-monitor {
@@ -98,6 +109,11 @@ input {color: #000 !important;}
 
 #demo {
   font-size: 2em;
+  background-color: #1b0c1b;
+  padding: 2px 8px 0px 8px;
+  border: 3px solid #2c0a5f;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .i-b {
@@ -150,3 +166,14 @@ label {
 .q-amber {color: #ee843e}
 .q-yellow {color: #eeeb3e}
 .q-green {color: #67ee3e}
+
+.color-controls button {
+  width: 2em;
+  height: 2em;
+}
+
+@media screen and (max-width: 1200px) {
+  .tech {
+    position: relative !important;
+  }
+}
