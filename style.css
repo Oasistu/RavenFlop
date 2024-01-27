@@ -66,11 +66,19 @@ input {color: #000 !important;}
 
 .mc-a6 {color: #FFAA00;}
 
+.mc-aa {color: #55FF55;}
+
 .mc-ab {color: #55FFFF;}
+
+.mc-ac {color: #FF5555;}
+
+.mc-an {text-decoration: underline; text-decoration-skip-ink: none;}
+
+.mc-al {font-weight: bold !important;}
 
 .container {
   width: 400px;
-  padding: 16px;
+  padding: 0 16px;
   display: flex;
   flex-direction: column;
 }
@@ -95,6 +103,9 @@ input {color: #000 !important;}
 .copy-button-list button {
   display: inline-block;
   padding: 8px 8px;
+  font-family: 'Minecraft';
+  font-size: 1.125em;
+  height: 3em;
 }
 
 #length-monitor {
@@ -172,8 +183,25 @@ label {
   height: 2em;
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1399px) {
   .tech {
     position: relative !important;
+    left: 0 !important;
   }
+}
+
+button#copy-croc-two span {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  line-height: 100%;
+}
+
+#copy-croc-two span::after {
+  content: 'Recommended';
+  color: green;
+  left: 50%;
+  top: calc(50% + 1.125em);
+  font-size: 0.75em !important;
+  line-height: 0.75em;
 }

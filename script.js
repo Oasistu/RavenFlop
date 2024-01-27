@@ -8,14 +8,18 @@ function hexToRGB (hex) {
   return (triPartHex.map(x => parseInt(x, 16)));
 }
 
+function checkPositive (number) {
+  if (number < 0) {return (number * -1);} else {return number;}
+}
+
 function compareRGB (heavyColor, oppColor, mod) {
-  console.log("COMPARE COLORS");
+  /*console.log("COMPARE COLORS");
   console.log(heavyColor);
   console.log(oppColor);
   console.log(mod);
   console.log(heavyColor[0] - ((heavyColor[0]-oppColor[0]) * mod));
   console.log((heavyColor[1] - Math.round((heavyColor[1]-oppColor[1]) * mod)));
-  console.log(heavyColor[2] - Math.round((heavyColor[2]-oppColor[2]) * mod));
+  console.log(heavyColor[2] - Math.round((heavyColor[2]-oppColor[2]) * mod));*/
   colorResult = [Math.round(heavyColor[0] - ((heavyColor[0]-oppColor[0]) * mod)),(heavyColor[1] - Math.round((heavyColor[1]-oppColor[1]) * mod)),(heavyColor[2] - Math.round((heavyColor[2]-oppColor[2]) * mod))];
   for (var i = 0;i < colorResult.length; i++) {
     if ((colorResult[i].toString()).length == 1) {
@@ -281,17 +285,24 @@ function processText () {
 
   }
   
-  // Croc Two Input text.
+  // ...Pre defining variables.
   var cTwoInput = inputText;
-  //cTwoInput = inputText.replaceAll(' ','');
-  // cTwo split into average sized segments by num of colours.
-  // Works cumulatively, if chars/per is 3.33, then the iteration with .33*X = 1 receives the extra char.
   var cTwoSegments = [];
   var cTwoCharsPer = (cTwoInput.replaceAll(' ','')).length / (inputColors.length - 1);
+  console.log('cTwoCharsPer: ' + cTwoCharsPer);
   let cTwoInputTemp = cTwoInput;
+  let cumulativeRemainder = 0;
+  // cTwo split into average sized segments by num of colours.
+  // Works cumulatively, if chars/per is 3.33, then the iteration with .33*X = 1 receives the extra char.
   for (var colorI = 0; colorI < inputColors.length - 1; colorI++ ) {
     let currentSeg = '';
-    for (var charI = 0; charI < (Math.floor(cTwoCharsPer) + Math.floor((cTwoCharsPer - Math.floor(cTwoCharsPer)) * (colorI + 1))); charI++ ) {
+    let addChar = 0;
+    cumulativeRemainder += cTwoCharsPer - Math.floor(cTwoCharsPer);
+    if (cumulativeRemainder >= 1) {
+      addChar = 1;
+      cumulativeRemainder -= 1;
+    }
+    for (var charI = 0; charI < (Math.floor(cTwoCharsPer) + addChar); charI++ ) {
       if (cTwoInputTemp[0] == ' ') {
         charI -= 1;
       }
@@ -300,6 +311,7 @@ function processText () {
     }
     cTwoSegments.push(currentSeg);
   }
+  console.log('cTwoSegments: ' + cTwoSegments);
   var cTwoSplit = cTwoSegments.map((a) => {
     return a = a.split(' ');
   })
@@ -307,32 +319,27 @@ function processText () {
   // Croc 2.0 Generation //
   // For -by Num Colours //
   let processedRecord = '';
+  let crocTwoPreview = '';
+  var demoClasses = `${itemBold ? 'i-b ' : ''}${itemItalic ? 'i-i ' : ''}${itemUnderline ? 'i-u' : ''}`;
   let cTwoOutput = '';
   console.log('cTwoSplit: ' + cTwoSplit);
   for (colorSeg = 0; colorSeg < cTwoSplit.length; colorSeg++ ) {
     // For -by Sub sections
     //console.log('i1: i of colorSeg: ' + cTwoSplit[colorSeg]);
     for (subSeg = 0; subSeg < cTwoSplit[colorSeg].length; subSeg++ ) {
-      //console.log('i2: i of subSeg of colorSeg: ' + cTwoSplit[colorSeg][subSeg]);
-      //console.log('subSeg: '+ cTwoSplit[subSeg]);
       // Determine colour.
       let cTwoColorOne = inputColors[colorSeg];
       let cTwoColorTwo = inputColors[colorSeg + 1];
       let cTwoPositions = cTwoInput.replaceAll(' ','').length - 1;
       //let cTwoModifier = (((processedRecord.replaceAll(' ','').length) / (cTwoInput.replaceAll(' ','').length - 1)) / (1 / (inputColors.length - 1))) * 1;
-      let cTwoModifier = (processedRecord.replaceAll(' ','').length - (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length);
-      //console.log(`subSeg: ${subSeg}, colorSeg: ${colorSeg}`);
-      //console.log('Pos: ' + processedRecord.replaceAll(' ','').length);
-      //console.log(`- (${colorSeg} x ${(cTwoPositions / cTwoSegments.length)})`);
-      //console.log(`/ ${(cTwoPositions / cTwoSegments.length)}`);
-      //console.log(`SegWidth: ${cTwoPositions} / ${cTwoSegments.length}`);
-      console.log('SubSeg: ' + cTwoSplit[colorSeg][subSeg]);
-      console.log(`Character "${cTwoSplit[colorSeg][subSeg][0]}", NS Index: ${processedRecord.replaceAll(' ','').length}, Modifier: ${cTwoModifier}`);
-      //console.log(`Modifier data: ((${processedRecord.replaceAll(' ','').length}) / ${(cTwoInput.replaceAll(' ','').length - 1)} / (1 / (${inputColors.length - 1}))`);
+      let cTwoModifier = checkPositive(processedRecord.replaceAll(' ','').length - (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length);
 
       //console.log(`Colours 1: ${cTwoColorOne}/${hexToRGB(cTwoColorOne)}, 2: ${cTwoColorTwo}/${hexToRGB(cTwoColorTwo)}`);
       cTwoColorOne = hexToRGB(cTwoColorOne);
       cTwoColorTwo = hexToRGB(cTwoColorTwo);
+      console.log(`cTwoColorOne: ${cTwoColorOne}, cTwoColorTwo: ${cTwoColorTwo}`);
+      console.log(`cTwoModifer: ${cTwoModifier}`);
+      console.log(`Compared (rgb): ${(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifier))}, Compared (hex): ${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifier))}`);
       //console.log(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifier));
 
       // PROCESSING.
@@ -343,16 +350,12 @@ function processText () {
       } else {
         // If SubSeg is one char, it can be processed in long format.
         if (currentSubSeg.length == 1) {
-          console.log(`1st Colour:  ${inputColors[colorSeg]}, 2nd Colour: ${inputColors[colorSeg + 1]}`);
-          console.log(`Comparison: '${compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifier)}'`);
-          console.log(`Comparison to hex: '${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifier))}'`);
-          console.log(`textExt: '${textExt}'`)
           cTwoOutput += `{${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifier))}}${textExt}${currentSubSeg}`;
         } else if ((currentSubSeg.length == 2) && (textExt.length == 0)) {
-          let cTwoModifierTwo = ((processedRecord.replaceAll(' ','').length + 1)- (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length);
+          let cTwoModifierTwo = checkPositive((processedRecord.replaceAll(' ','').length + 1)- (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length);
           cTwoOutput += `{${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifier))}}${currentSubSeg[0]}{${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifierTwo))}}${currentSubSeg[1]}`;
         } else {
-          let cTwoModifierTwo = ((processedRecord.replaceAll(' ','').length + currentSubSeg.length - 1)- (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length);
+          let cTwoModifierTwo = checkPositive((processedRecord.replaceAll(' ','').length + currentSubSeg.length - 1)- (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length);
           cTwoOutput += `{${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifier))}>}${textExt}${currentSubSeg}{${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifierTwo))}<}`;
         }
 
@@ -360,6 +363,11 @@ function processText () {
           cTwoOutput += ' ';
         }
 
+      }
+
+      for (var segIndex = 0; segIndex < currentSubSeg.length; segIndex++) {
+        var currentModifier = checkPositive((processedRecord + currentSubSeg.slice(0, segIndex)).replaceAll(' ','').length - (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length); 
+        crocTwoPreview += (`<span class="${demoClasses}" style="color:${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, currentModifier))}">${currentSubSeg[segIndex]}</span>`)
       }
       
       processedRecord += cTwoSplit[colorSeg][subSeg];
@@ -397,7 +405,7 @@ function processText () {
 
   // Construct DEMO + Output Texts.
   //   - Classes + Minecraft styles, for formatting.
-  var demoClasses = `${itemBold ? 'i-b ' : ''}${itemItalic ? 'i-i ' : ''}${itemUnderline ? 'i-u' : ''}`;
+  //var demoClasses = `${itemBold ? 'i-b ' : ''}${itemItalic ? 'i-i ' : ''}${itemUnderline ? 'i-u' : ''}`;
 
   //   - Init. Starts with first char, using first color.
   //let demoText = `<span class="${demoClasses}" style="color: ${inputColors[0]}">${inputText[0]}</span>`;
@@ -405,6 +413,7 @@ function processText () {
   let demoText = outputText = '';
 
   //console.log(demoText);
+  // LONG FORMAT PREVIEW
   for (let charX = 0; charX < colourArray.length; charX++) {
     // Raw styling, for copying.
     outputText = outputText + `{#${colourArray[charX]}}${textExt}${inputText[(charX)]}`;
@@ -412,6 +421,7 @@ function processText () {
     // Demonstration. Styles rendered in spans.
     demoText = demoText + `<span class="${demoClasses}" style="color: #${colourArray[charX]}">${inputText[charX]}</span>`;
   }
+  
   // Adding the 
   //demoText = demoText + `<span class="${demoClasses}" style="color: ${inputColors[1]}">${inputText[inputText.length - 1]}</span>`;
   //outputText = outputText + `{${inputColors[1]}}${textExt}${inputText[inputText.length - 1]}`;
@@ -428,7 +438,7 @@ function processText () {
   lengthColor('#croc2-format-length', cTwoOutput.length);
   
   if (demoText.length > 1) {
-    $('#demo').html(demoText);
+    $('#demo').html(crocTwoPreview);
   } else {$('#demo').html("<span>Name or Lore</span>");}
 }
 

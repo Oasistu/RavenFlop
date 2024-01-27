@@ -10,7 +10,7 @@
 
 <body>
   <div class="container">
-    <h1>RavenFlop</h1>
+    <h1 style="color: #FF5555;font-size: 2.5em;margin-bottom: 16px;">RavenFlop</h1>
     <p class="reg-text">Named after BirdFlop.</p>
     <p class="reg-text" style="color: #b4b4b4; font-style: italic;">by Oasistu</p>
     <div class="section">
@@ -62,23 +62,41 @@
     <div class="section">
       <h3 style="color:#FFAA00;cursor:default;margin-top: 16px;">Copy:</h3>
       <div class="copy-button-list" style="display: flex;flex-direction: column;">
-        <button id="copy-text">Long Format</button>
-        <button id="copy-new-format">Crocodile Format (<>)</button>
-        <button id="copy-croc-two">Croc 2.0 (Experimental)</button>
+        <button id="copy-text" style="display:none;">Long Format</button>
+        <button id="copy-new-format">Croc 1.0</button>
+        <button id="copy-croc-two"><span>Croc 2.0</span></button>
       </div>
     </div>
     <div class="section">
       <h2>Length:</h2>
-      <p id="long-format-length">Long Format: n/a Characters</p>
-      <p id="croc-format-length">Croc Format: n/a Characters</p>
-      <p id="croc2-format-length">Croc 2.0   : n/a Characters</p>
+      <p style="display:none;" id="long-format-length">Long Format: n/a Characters</p>
+      <p id="croc-format-length">Croc 1.0: n/a Characters</p>
+      <p id="croc2-format-length">Croc 2.0: n/a Characters</p>
       <p><span class="q-amber">246</span> Limit for /itemname & /itemlore</p>
       <p><span class="q-yellow">244</span> Limit for /itemlore [1 digit]</p>
       <p><span class="q-green">243</span> Limit for /itemlore [2 digit]</p>
     </div>
     <div class="tech">
-      <p><span class="mc-a7">Version:</span> 3.01</p>
-      <p><span class="mc-a6">Changes:</span>
+      <p><span class="mc-a7">Version:</span> 3.02</p>
+      <p style="margin-bottom: 16px;"><span class="mc-aa mc-an">Which format to use:</span>
+        <br>✦ Croc 1.0:
+        <br>Spaces are included in the gradient, which
+        <br>depends on preference. However, it is also
+        <br>more compact than Croc 2.0.
+        <br>
+        <br>✦ Croc 2.0:
+        <br>Spaces are not included in the gradient so
+        <br>there should be no missing/invisible points
+        <br>of colour. Designed as an improvement of 
+        <br>the first Croc format.
+      </p>
+      <p><span class="mc-a6 mc-an">Changes:</span>
+        <br>•Renamed Crocodile Format (<>) to Croc 1.0
+        <br>•Removed long format (if anyone wants
+        <br>it back just let me know)
+        <br>•Added format descriptions
+        <br>•Preview now displays croc 2.0, not long
+        <br>•2 Bug fixes on croc 2.0
         <br>•Layout overhaul
         <br>•Added croc 2.0
         <br>•Added feedback section
@@ -86,7 +104,7 @@
         <br>•Fixed color blend issue (Croc Format)
         <br>•Added version/changes
       </p>
-      <p><span class="mc-ab">Feedback:</span><br>Found a bug or have some feedback?<br>Please report it to me on discord.</p>
+      <p><span class="mc-ab mc-an">Feedback:</span><br>Found a bug or have some feedback?<br>Please report it to me on discord.</p>
     </div>
   </div>
 
