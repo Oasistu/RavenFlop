@@ -369,6 +369,10 @@ function processText () {
         var currentModifier = checkPositive((processedRecord + currentSubSeg.slice(0, segIndex)).replaceAll(' ','').length - (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length); 
         crocTwoPreview += (`<span class="${demoClasses}" style="color:${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, currentModifier))}">${currentSubSeg[segIndex]}</span>`)
       }
+
+      if ((currentSubSeg.length == 1) || (cTwoSplit[colorSeg][subSeg + 1])) {
+        crocTwoPreview += ' ';
+      }
       
       processedRecord += cTwoSplit[colorSeg][subSeg];
       if (subSeg < cTwoSplit[colorSeg].length - 1) {
