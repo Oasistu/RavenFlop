@@ -12,6 +12,16 @@ function checkPositive (number) {
   if (number < 0) {return (number * -1);} else {return number;}
 }
 
+function trueChars(str) {
+  return [...new Intl.Segmenter().segment(str)]
+}
+
+function compressChars(str) {
+  return (str.map((a) => {
+    return a.segment;
+  })).join("");
+}
+
 function compareRGB (heavyColor, oppColor, mod) {
   /*console.log("COMPARE COLORS");
   console.log(heavyColor);
@@ -55,6 +65,7 @@ function lengthColor(id, count) {
 }
 
 function processText () {
+  console.clear();
   var inputText = $('#text-input').val();
 
   var itemBold = ($('#text-bold').is(':checked'));
@@ -288,13 +299,47 @@ function processText () {
   // ...Pre defining variables.
   var cTwoInput = inputText;
   var cTwoSegments = [];
-  var cTwoCharsPer = (cTwoInput.replaceAll(' ','')).length / (inputColors.length - 1);
-  console.log('cTwoCharsPer: ' + cTwoCharsPer);
+  //-> var cTwoCharsPer = (cTwoInput.replaceAll(' ','')).length / (inputColors.length - 1);
+  var cTwoInputObj = trueChars(cTwoInput);
+  //var cTwoCharsPer = (trueChars(cTwoInput.replaceAll(' ',''))).length / (inputColors.length - 1);
+  //console.log('cTwoCharsPer: ' + cTwoCharsPer);
   let cTwoInputTemp = cTwoInput;
   let cumulativeRemainder = 0;
+  let cTwoInputObjTemp = cTwoInputObj;
+  let colorsProcessed = inputColors.length - 1
+  for (var colorI = 0; colorI < inputColors.length - 1; colorI++) {
+
+    // 
+    var newSection = '';
+    // number of characters for this section = Math.ceil(charsLeft / colorsLeft)
+    var charsInSection = (Math.ceil((compressChars(cTwoInputObjTemp)).replaceAll(' ','').length / colorsProcessed));
+    for (var charI = 0; charI < charsInSection; charI++ ) {
+      newSection += cTwoInputObjTemp[0].segment;
+      // If character is space, extend process by one character.
+      if (cTwoInputObjTemp[0].segment == ' ') {charI += -1;}
+      cTwoInputObjTemp = cTwoInputObjTemp.slice(1,cTwoInputObjTemp.length);
+    }
+    cTwoSegments.push(newSection);
+    
+    //// ----
+    /*var newSegment = ((cTwoInputObjTemp.slice(0, (Math.ceil(cTwoInputObjTemp.length / colorsProcessed)))).map((a) => {
+      return a.segment;
+    })).join("");
+    cTwoInputObjTemp = cTwoInputObjTemp.slice((Math.ceil(cTwoInputObjTemp.length / colorsProcessed)), cTwoInputObjTemp.length);
+    for (var spaceAdjusted = 0; spaceAdjusted < ((newSegment.split(' ')).length - 1); spaceAdjusted++ ) {
+      console.log(cTwoInputObjTemp);
+      newSegment += cTwoInputObjTemp[0].segment;
+      cTwoInputObjTemp = cTwoInputObjTemp.slice(1, cTwoInputObjTemp.length);
+    }
+    cTwoSegments.push(newSegment);*/
+    //console.log('Hello');
+    //console.log("Hello: "+ (((cTwoInputObjTemp.slice(0, (Math.ceil(cTwoInputObjTemp.length / colorsProcessed)))).map((a) => {return a.segment})).join("")));
+    colorsProcessed += -1;
+  }
+
   // cTwo split into average sized segments by num of colours.
   // Works cumulatively, if chars/per is 3.33, then the iteration with .33*X = 1 receives the extra char.
-  for (var colorI = 0; colorI < inputColors.length - 1; colorI++ ) {
+  /*for (var colorI = 0; colorI < inputColors.length - 1; colorI++ ) {
     let currentSeg = '';
     let addChar = 0;
     cumulativeRemainder += cTwoCharsPer - Math.floor(cTwoCharsPer);
@@ -303,17 +348,24 @@ function processText () {
       cumulativeRemainder -= 1;
     }
     for (var charI = 0; charI < (Math.floor(cTwoCharsPer) + addChar); charI++ ) {
-      if (cTwoInputTemp[0] == ' ') {
+      //-> if (cTwoInputTemp[0] == ' ') {
+      if (cTwoInputObj[0].segment == ' ') {
         charI -= 1;
       }
-      currentSeg += cTwoInputTemp[0];
-      cTwoInputTemp = cTwoInputTemp.slice(1,cTwoInputTemp.length);
+      currentSeg += cTwoInputObj[0].segment;
+      cTwoInputObj = cTwoInputObj.slice(1,cTwoInputObj.length);
     }
     cTwoSegments.push(currentSeg);
-  }
+  }*/
+
+  // Input split by colour section, and then within colour section by spaces.
+  // - Obj variant is where each character is represented by an object instead of by UTF-16 characters.
   console.log('cTwoSegments: ' + cTwoSegments);
   var cTwoSplit = cTwoSegments.map((a) => {
     return a = a.split(' ');
+  })
+  var cTwoSplitObj = cTwoSplit.map((a) => {
+    return a.map((b) => {return trueChars(b)});
   })
 
   // Croc 2.0 Generation //
@@ -323,16 +375,16 @@ function processText () {
   var demoClasses = `${itemBold ? 'i-b ' : ''}${itemItalic ? 'i-i ' : ''}${itemUnderline ? 'i-u' : ''}`;
   let cTwoOutput = '';
   console.log('cTwoSplit: ' + cTwoSplit);
-  for (colorSeg = 0; colorSeg < cTwoSplit.length; colorSeg++ ) {
+  for (colorSeg = 0; colorSeg < cTwoSplitObj.length; colorSeg++ ) {
     // For -by Sub sections
     //console.log('i1: i of colorSeg: ' + cTwoSplit[colorSeg]);
-    for (subSeg = 0; subSeg < cTwoSplit[colorSeg].length; subSeg++ ) {
+    for (subSeg = 0; subSeg < cTwoSplitObj[colorSeg].length; subSeg++ ) {
       // Determine colour.
       let cTwoColorOne = inputColors[colorSeg];
       let cTwoColorTwo = inputColors[colorSeg + 1];
-      let cTwoPositions = cTwoInput.replaceAll(' ','').length - 1;
+      let cTwoPositions = (trueChars(cTwoInput.replaceAll(' ',''))).length - 1;
       //let cTwoModifier = (((processedRecord.replaceAll(' ','').length) / (cTwoInput.replaceAll(' ','').length - 1)) / (1 / (inputColors.length - 1))) * 1;
-      let cTwoModifier = checkPositive(processedRecord.replaceAll(' ','').length - (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length);
+      let cTwoModifier = checkPositive((trueChars(processedRecord.replaceAll(' ',''))).length - (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length);
 
       //console.log(`Colours 1: ${cTwoColorOne}/${hexToRGB(cTwoColorOne)}, 2: ${cTwoColorTwo}/${hexToRGB(cTwoColorTwo)}`);
       cTwoColorOne = hexToRGB(cTwoColorOne);
@@ -343,39 +395,49 @@ function processText () {
       //console.log(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifier));
 
       // PROCESSING.
-      let currentSubSeg = cTwoSplit[colorSeg][subSeg];
+      //-> let currentSubSeg = cTwoSplit[colorSeg][subSeg];
+      let currentSubSeg = cTwoSplitObj[colorSeg][subSeg];
       // If space, else- proceed
       if (currentSubSeg == '') {
         cTwoOutput += ' ';
       } else {
         // If SubSeg is one char, it can be processed in long format.
         if (currentSubSeg.length == 1) {
-          cTwoOutput += `{${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifier))}}${textExt}${currentSubSeg}`;
+          cTwoOutput += `{${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifier))}}${textExt}${currentSubSeg[0].segment}`;
         } else if ((currentSubSeg.length == 2) && (textExt.length == 0)) {
-          let cTwoModifierTwo = checkPositive((processedRecord.replaceAll(' ','').length + 1)- (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length);
-          cTwoOutput += `{${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifier))}}${currentSubSeg[0]}{${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifierTwo))}}${currentSubSeg[1]}`;
+          let cTwoModifierTwo = checkPositive(((trueChars(processedRecord.replaceAll(' ',''))).length + 1)- (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length);
+          console.log('FIND IT: ');
+          console.log('Current: ' + currentSubSeg[0].segment);
+          console.log('cTwoColorOne: ' + cTwoColorOne);
+          console.log('cTwoColorTwo: ' + cTwoColorTwo);
+          console.log('cTwoModifier: ' + cTwoModifier);
+          console.log('cTwoModifierTwo: ' + cTwoModifierTwo);
+          cTwoOutput += `{${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifier))}}${currentSubSeg[0].segment}{${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifierTwo))}}${currentSubSeg[1].segment}`;
         } else {
-          let cTwoModifierTwo = checkPositive((processedRecord.replaceAll(' ','').length + currentSubSeg.length - 1)- (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length);
-          cTwoOutput += `{${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifier))}>}${textExt}${currentSubSeg}{${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifierTwo))}<}`;
+          let cTwoModifierTwo = checkPositive(((trueChars(processedRecord.replaceAll(' ',''))).length + currentSubSeg.length - 1)- (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length);
+          cTwoOutput += `{${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifier))}>}${textExt}${currentSubSeg[0].input}{${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, cTwoModifierTwo))}<}`;
         }
 
-        if (cTwoSplit[colorSeg][subSeg + 1]) {
+        if (cTwoSplitObj[colorSeg][subSeg + 1]) {
           cTwoOutput += ' ';
         }
 
       }
 
       for (var segIndex = 0; segIndex < currentSubSeg.length; segIndex++) {
-        var currentModifier = checkPositive((processedRecord + currentSubSeg.slice(0, segIndex)).replaceAll(' ','').length - (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length); 
-        crocTwoPreview += (`<span class="${demoClasses}" style="color:${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, currentModifier))}">${currentSubSeg[segIndex]}</span>`)
+        var currentModifier = checkPositive((trueChars((processedRecord + ((currentSubSeg.slice(0, segIndex)).map((a) => {return a.segment})).join("")).replaceAll(' ',''))).length - (colorSeg * (cTwoPositions / cTwoSegments.length))) / (cTwoPositions / cTwoSegments.length); 
+        crocTwoPreview += (`<span class="${demoClasses}" style="color:${hexFromRGB(compareRGB(cTwoColorOne, cTwoColorTwo, currentModifier))}">${currentSubSeg[segIndex].segment}</span>`)
       }
 
-      if ((currentSubSeg.length == 1) || (cTwoSplit[colorSeg][subSeg + 1])) {
+      // -------------------------
+
+
+      if ((currentSubSeg.length == 1) || (cTwoSplitObj[colorSeg][subSeg + 1])) {
         crocTwoPreview += ' ';
       }
       
       processedRecord += cTwoSplit[colorSeg][subSeg];
-      if (subSeg < cTwoSplit[colorSeg].length - 1) {
+      if (subSeg < cTwoSplitObj[colorSeg].length - 1) {
         processedRecord += ' ';
       }
       
