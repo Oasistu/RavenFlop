@@ -198,8 +198,9 @@ button#copy-croc-two span {
 }
 
 #copy-croc-two span::after {
-  content: 'Recommended';
-  color: green;
+  content: 'Work in progress';
+  /*color: green;*/
+  color: red;
   left: 50%;
   top: calc(50% + 1.125em);
   font-size: 0.75em !important;
