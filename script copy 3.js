@@ -76,8 +76,7 @@ function processText () {
   let gColour1 = $('#color1').val();
   let gColour2 = $('#color2').val();
 
-  var realInputText = trueChars(inputText);
-  let colourInstances = realInputText.length;
+  let colourInstances = inputText.length;
   console.log('Colour Instances: ' + colourInstances);
   var colourArray = [];
   
@@ -170,7 +169,7 @@ function processText () {
     // Sequence of colouring on a character based on location on a "colour number line".
     // * Determine position.
     // * Modify color relative to position.
-    var inputTextLen = realInputText.length;
+    var inputTextLen = inputText.length;
     var numColors = inputColors.length - 1;       // I think this matches up as number of Insertions.
     var positionMod = numColors / inputTextLen;
     //console.log('---------------------');
@@ -178,9 +177,9 @@ function processText () {
     //console.log(`positionMod = ${numColors} / ${inputTextLen}`)
     
     // REMAPPING - Formerly: each colourInstance, new: each gradientInsertion
-    var tempStr = realInputText;
+    var tempStr = inputText;
     finalOutput = `{${inputColors[0]}>}${textExt}`
-    var lengthInsertion = (((trueChars(inputText.replace(' ',''))).length) / numColors);
+    var lengthInsertion = (((inputText.replace(' ','')).length) / numColors);
     for (let iInsertion = 1; iInsertion < numColors; iInsertion++) {
       console.log("Processing Insertion");
       var charPosition = lengthInsertion * iInsertion;
@@ -198,9 +197,9 @@ function processText () {
         var charsInSection = ((Math.floor(iInsertion * lengthInsertion) - 1) - ((Math.floor((iInsertion - 1) * lengthInsertion)) - 1));
         //console.log(`charsInsection: ${charsInSection}`);
         while (validChar < charsInSection) {
-          finalOutput += tempStr[0].segment;
+          finalOutput += tempStr[0];
           //console.log(`validChar: ${validChar}, charsInsection: ${charsInSection}, tempStr char: ${tempStr[0]}`);
-          if (tempStr[0].segment != ' ') {
+          if (tempStr[0] != ' ') {
             validChar += 1;
           }
           tempStr = tempStr.slice(1,tempStr.length);
@@ -228,7 +227,7 @@ function processText () {
       }
       console.log('finalOutput: ' + finalOutput);
     }
-    finalOutput += `${compressChars(tempStr)}{${inputColors[inputColors.length - 1]}<}`
+    finalOutput += `${tempStr}{${inputColors[inputColors.length - 1]}<}`
     console.log('Completed: ' + finalOutput);
     // For each colourInstance, generate a colour (per char)
     for (let colourX = 0; colourX < colourInstances; colourX++) {
@@ -298,12 +297,13 @@ function processText () {
   }
   
   // ...Pre defining variables.
-  var cTwoInput = $('#text-input').val();;
+  var cTwoInput = inputText;
   var cTwoSegments = [];
   //-> var cTwoCharsPer = (cTwoInput.replaceAll(' ','')).length / (inputColors.length - 1);
   var cTwoInputObj = trueChars(cTwoInput);
   //var cTwoCharsPer = (trueChars(cTwoInput.replaceAll(' ',''))).length / (inputColors.length - 1);
   //console.log('cTwoCharsPer: ' + cTwoCharsPer);
+  let cTwoInputTemp = cTwoInput;
   let cumulativeRemainder = 0;
   let cTwoInputObjTemp = cTwoInputObj;
   let colorsProcessed = inputColors.length - 1
@@ -312,7 +312,7 @@ function processText () {
     // 
     var newSection = '';
     // number of characters for this section = Math.ceil(charsLeft / colorsLeft)
-    var charsInSection = (Math.ceil((trueChars((compressChars(cTwoInputObjTemp)).replaceAll(' ',''))).length / colorsProcessed));
+    var charsInSection = (Math.ceil((compressChars(cTwoInputObjTemp)).replaceAll(' ','').length / colorsProcessed));
     for (var charI = 0; charI < charsInSection; charI++ ) {
       newSection += cTwoInputObjTemp[0].segment;
       // If character is space, extend process by one character.
